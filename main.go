@@ -48,7 +48,10 @@ func main() {
 	yellowsMap := map[rune]map[rune]struct{}{}
 	for letter, positions := range Yellows {
 		for _, pos := range positions {
-			yellowsMap[letter] = map[rune]struct{}{pos: {}}
+			if yellowsMap[letter] == nil {
+				yellowsMap[letter] = map[rune]struct{}{}
+			}
+			yellowsMap[letter][pos] = struct{}{}
 		}
 	}
 	containsAllYellows := func(guess string) bool {
@@ -135,7 +138,7 @@ func main() {
 			// Check if current alpha is a yellow
 			if impossibles, ok := yellowsMap[currentAlpha]; ok {
 				// Check if current alpha is impossible using yellows info
-				if _, impossible := impossibles[itor(guessIndex+1)]; impossible {
+				if _, isImpossible := impossibles[itor(guessIndex+1)]; isImpossible {
 					// Skip impossible guess
 					continue
 				}
